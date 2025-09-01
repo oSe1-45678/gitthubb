@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Logout</title>
 	<link href="bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="style.css">
 </head>
 <body class="d-flex align-items-center justify-content-center" style="height:100vh;">
 <div class="login-box p-4 rounded text-center">

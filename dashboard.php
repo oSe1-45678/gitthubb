@@ -13,10 +13,8 @@ include "config.php";
 <head>
     <meta charset="UTF-8">
     <title>Gitthubb Dashboard</title>
-    <!-- Bootstrap -->
-    <link href="bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="assets/css/style.css"
+     <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>

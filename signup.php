@@ -23,49 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <title>Create an account - Gitthubb</title>
-  <!-- Bootstrap -->
-  <link href="bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <style>
-    body {
-      background-color: #0d1117;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    }
-    .signup-box {
-      background-color: #161b22;
-      border: 1px solid #30363d;
-      width: 360px;
-      padding: 24px;
-      border-radius: 6px;
-    }
-    .form-control {
-      background-color: #0d1117;
-      border: 1px solid #30363d;
-      color: #c9d1d9;
-    }
-    .form-control:focus {
-      border-color: #58a6ff;
-      box-shadow: none;
-    }
-    label {
-      font-weight: 500;
-      color: #c9d1d9;
-    }
-    .btn-success {
-      background-color: #238636;
-      border: none;
-      font-weight: 600;
-    }
-    .btn-success:hover {
-      background-color: #2ea043;
-    }
-    a {
-      color: #58a6ff;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
+    <link rel="stylesheet" href="style.css">
   </style>
 </head>
 <body class="d-flex align-items-center justify-content-center" style="height:100vh;">
