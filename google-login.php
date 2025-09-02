@@ -18,8 +18,7 @@ try {
 } catch (Exception $e) {
     // Output error page
     echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Google Login Error</title>';
-    echo '<link href="bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">';
-    echo '<link rel="stylesheet" href="assets/css/style.css">';
+     echo '<link rel="stylesheet" href="style.css">';
     echo '</head><body class="d-flex align-items-center justify-content-center" style="height:100vh;">';
     echo '<div class="login-box p-4 rounded text-center">';
     echo "<h2>Google Client Error</h2>";
