@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GitHub-style Landing</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="#">
+        <!-- Use your own logo here. This wordmark is a neutral placeholder. -->
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__text">Octo</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Primary">
+        <button class="nav__toggle" aria-expanded="false" aria-controls="navMenu">Menu</button>
+        <ul id="navMenu" class="nav__menu">
+          <li><a href="#">Product</a></li>
+          <li><a href="#">Solutions</a></li>
+          <li><a href="#">Open&nbsp;Source</a></li>
+          <li><a href="#">Pricing</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav__actions">
+        <form class="nav__search" role="search">
+          <input type="search" placeholder="Search" aria-label="Search" />
+        </form>
+        <a class="btn btn--ghost" href="#">Sign in</a>
+        <a class="btn btn--primary" href="#">Sign up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <div class="glow glow--1"></div>
+      <div class="glow glow--2"></div>
+      <div class="grid-overlay"></div>
+    </div>
+    <div class="container hero__inner">
+      <h1 class="hero__title">Let’s build from here</h1>
+      <p class="hero__subtitle">
+        The world’s leading platform for developers to collaborate, ship, and secure software.
+      </p>
+
+      <form class="signup" action="#" method="post" autocomplete="off" novalidate>
+        <label class="visually-hidden" for="email">Email address</label>
+        <input id="email" name="email" type="email" placeholder="Email address" required />
+        <button class="btn btn--primary btn--xl" type="submit">Sign up for Octo</button>
+      </form>
+
+      <p class="hero__fine">
+        By signing up, you agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+      </p>
+
+      <div class="trust">
+        <p class="trust__label">Trusted by the world’s leading organizations</p>
+        <ul class="trust__logos" aria-label="Company logos">
+          <li class="logo-placeholder" aria-hidden="true" title="Company 1"></li>
+          <li class="logo-placeholder" aria-hidden="true" title="Company 2"></li>
+          <li class="logo-placeholder" aria-hidden="true" title="Company 3"></li>
+          <li class="logo-placeholder" aria-hidden="true" title="Company 4"></li>
+          <li class="logo-placeholder" aria-hidden="true" title="Company 5"></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Row 1 -->
+  <section class="feature">
+    <div class="container feature__inner">
+      <div class="feature__media">
+        <div class="card code-card">
+<pre aria-label="Sample code block"><code>git init
+git add .
+git commit -m "first commit"
+git push origin main</code></pre>
+        </div>
+      </div>
+      <div class="feature__content">
+        <h2>Collaborate without friction</h2>
+        <p>Branches, pull requests, and code review that scale from hobby projects to the world’s largest enterprises.</p>
+        <ul class="bullets">
+          <li>Lightning-fast code browsing</li>
+          <li>First-class reviews and checks</li>
+          <li>Protected branches and required status</li>
+        </ul>
+        <a class="link-cta" href="#">Explore collaboration →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Row 2 -->
+  <section class="feature feature--alt">
+    <div class="container feature__inner">
+      <div class="feature__content">
+        <h2>Automate with CI/CD</h2>
+        <p>Ship faster with integrated builds, tests, and deployments powered by workflows.</p>
+        <ul class="bullets">
+          <li>Reusable workflows</li>
+          <li>Matrix builds across platforms</li>
+          <li>First-party secrets management</li>
+        </ul>
+        <a class="link-cta" href="#">See automation →</a>
+      </div>
+      <div class="feature__media">
+        <div class="card stats-card">
+          <div class="stat">
+            <div class="stat__num">7,432</div>
+            <div class="stat__label">workflows today</div>
+          </div>
+          <div class="divider"></div>
+          <div class="stat">
+            <div class="stat__num">99.95%</div>
+            <div class="stat__label">success rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Band -->
+  <section class="cta">
+    <div class="container cta__inner">
+      <h2>Start building today</h2>
+      <form class="signup signup--inline" action="#" method="post" autocomplete="off" novalidate>
+        <label class="visually-hidden" for="email2">Email address</label>
+        <input id="email2" name="email" type="email" placeholder="Email address" required />
+        <button class="btn btn--primary btn--lg" type="submit">Sign up</button>
+      </form>
+      <a class="btn btn--ghost btn--lg" href="#">Learn more</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a class="brand brand--footer" href="#">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span class="brand__text">Octo</span>
+        </a>
+        <p class="footer__note">© 2025 Octo, Inc.</p>
+      </div>
+      <nav class="footer__cols" aria-label="Footer">
+        <div class="col">
+          <h3>Product</h3>
+          <ul>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Enterprise</a></li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Platform</h3>
+          <ul>
+            <li><a href="#">API</a></li>
+            <li><a href="#">Partners</a></li>
+            <li><a href="#">CLI</a></li>
+            <li><a href="#">Mobile</a></li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">Docs</a></li>
+            <li><a href="#">Community</a></li>
+            <li><a href="#">Learning Lab</a></li>
+            <li><a href="#">Status</a></li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    // Minimal mobile nav behavior
+    const toggle = document.querySelector('.nav__toggle');
+    const menu   = document.getElementById('navMenu');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!open));
+        menu.classList.toggle('is-open');
+      });
+    }
+  </script>
+</body>
+</html>

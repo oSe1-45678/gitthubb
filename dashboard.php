@@ -1,141 +1,139 @@
-?php
+<?php
 session_start();
+
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: http://localhost/gitthubb/dashboard.php");
-    exit;
+    header("Location: login.php");
+    exit();
 }
-include "config.php";
+
+// Fetch user profile
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) die("DB connection failed: " . $conn->connect_error);
+
+$sql = "SELECT username, avatar_url, bio, followers, following FROM users WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$userResult = $stmt->get_result();
+$user = $userResult->fetch_assoc();
+$stmt->close();
+
+// Database connection (adjust to your settings)
+$servername = "localhost";
+$username   = "root";
+$password   = "";
+$dbname     = "github_clone";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("DB connection failed: " . $conn->connect_error);
+}
+
+// Fetch repositories for logged-in user
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT name, visibility, updated_at FROM repositories WHERE user_id = ? ORDER BY updated_at DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$repos = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+$conn->close();
 ?>
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Gitthubb Dashboard</title>
-
-    <!-- Bootstrap -->
-    <link href="bootstrap-5.3.8-dist/bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
 </head>
-
 <body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg px-3">
-        <a class="navbar-brand text-white" href="#">
-            <svg height="32" viewBox="0 0 16 16" width="32" aria-hidden="true" fill="white">
-                <path d="M8 0C3.58 0 0 3.58..."></path>
-            </svg>
-        </a>
-
-        <!-- Search bar -->
-        <form class="d-flex mx-3 flex-grow-1" method="GET" action="dashboard.php">
-            <input class="form-control search-box" type="search" name="search" placeholder="Search or jump to...">
-        </form>
-
-        <!-- Top Menus -->
-        <ul class="navbar-nav me-3">
-            <li class="nav-item"><a class="nav-link">Pull requests</a></li>
-            <li class="nav-item"><a class="nav-link">Issues</a></li>
-            <li class="nav-item"><a class="nav-link">Marketplace</a></li>
-            <li class="nav-item"><a class="nav-link">Explore</a></li>
-        </ul>
-
-        <!-- Profile dropdown -->
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="assets/img/avatar.png" alt="profile" width="32" height="32" class="rounded-circle me-2">
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser">
-                <li><a class="dropdown-item">Your profile</a></li>
-                <li><a class="dropdown-item">Settings</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="logout.php">Sign out</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Layout -->
-    <div class="container mt-4">
-        <div class="row">
-
-            <!-- Sidebar -->
-            <div class="col-md-3 sidebar">
-                <div class="text-center mb-3">
-                    <img src="assets/img/avatar.png" width="120" class="rounded-circle border">
-                    <h5 class="mt-2 text-white"><?php echo $_SESSION['username']; ?></h5>
-                </div>
-                <ul class="list-group">
-                    <a class="list-group-item active">Overview</a>
-                    <a class="list-group-item">Repositories</a>
-                    <a class="list-group-item">Projects</a>
-                    <a class="list-group-item">Packages</a>
-                    <a class="list-group-item">Stars</a>
-                </ul>
-            </div>
-
-            <!-- Main Content -->
-            <div class="col-md-9">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="text-white">Repositories</h3>
-                    <a href="#" class="btn btn-success">New</a>
-                </div>
-
-                <!-- Repo List -->
-                <div>
-                    <?php
-                    // Create new repo
-                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['repo_name'])) {
-                        $repo_name = trim($_POST['repo_name']);
-                        $repo_desc = trim($_POST['repo_desc']);
-                        $user_id = $_SESSION['user_id'];
-
-                        $sql = "INSERT INTO repositories (user_id, name, description) VALUES (?, ?, ?)";
-                        $stmt = $conn->prepare($sql);
-                        $stmt->bind_param("iss", $user_id, $repo_name, $repo_desc);
-                        $stmt->execute();
-                    }
-
-                    // Search
-                    $search = $_GET['search'] ?? "";
-                    if ($search) {
-                        $sql = "SELECT * FROM repositories WHERE user_id = ? AND name LIKE ?";
-                        $stmt = $conn->prepare($sql);
-                        $like = "%$search%";
-                        $stmt->bind_param("is", $_SESSION['user_id'], $like);
-                    } else {
-                        $sql = "SELECT * FROM repositories WHERE user_id = ?";
-                        $stmt = $conn->prepare($sql);
-                        $stmt->bind_param("i", $_SESSION['user_id']);
-                    }
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-
-                    while ($repo = $result->fetch_assoc()) {
-                        echo '<div class="repo-item">';
-                        echo '<h5><a href="#" class="repo-link">' . htmlspecialchars($repo['name']) . '</a></h5>';
-                        if (!empty($repo['description'])) {
-                            echo '<p>' . htmlspecialchars($repo['description']) . '</p>';
-                        }
-                        echo '<small>Updated ' . date("M d, Y", strtotime($repo['created_at'])) . '</small>';
-                        echo '</div>';
-                    }
-                    ?>
-                </div>
-            </div>
-
-        </div>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar__left">
+      <a href="#" class="brand">Octo</a>
+      <form class="search">
+        <input type="search" placeholder="Search or jump to…" />
+      </form>
     </div>
+    <div class="topbar__right">
+      <a href="#" class="icon">+</a>
+      <a href="#" class="icon">🔔</a>
+      <div class="profile">
+        <img src="https://avatars.githubusercontent.com/u/1?v=4" alt="User avatar" />
+      </div>
+    </div>
+  </header>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <!-- Layout -->
+  <div class="layout">
+    
+  <!-- Sidebar -->
+<aside class="sidebar">
+  <div class="profile-card">
+    <img src="<?php echo htmlspecialchars($user['avatar_url']); ?>" alt="Avatar">
+    <h2><?php echo htmlspecialchars($user['username']); ?></h2>
+    <p class="bio"><?php echo htmlspecialchars($user['bio']); ?></p>
+
+    <div class="stats">
+      <span><strong><?php echo $user['followers']; ?></strong> followers</span>
+      ·
+      <span><strong><?php echo $user['following']; ?></strong> following</span>
+    </div>
+    <a href="edit_profile.php" class="btn btn--small">Edit profile</a>
+  </div>
+
+  <ul class="sidebar-links">
+    <li><a href="#" class="active">Overview</a></li>
+    <li><a href="#">Repositories</a></li>
+    <li><a href="#">Projects</a></li>
+    <li><a href="#">Stars</a></li>
+    <li><a href="#">Followers</a></li>
+    <li><a href="#">Following</a></li>
+  </ul>
+</aside>
+
+    <!-- Main -->
+    <main class="main">
+      <div class="repos-header">
+        <h2>Repositories</h2>
+        <a href="new_repo.php" class="btn btn--small">New</a>
+      </div>
+
+      <div class="repo-filters">
+        <ul class="repo-list">
+  <?php if (count($repos) > 0): ?>
+    <?php foreach ($repos as $repo): ?>
+      <li>
+        <a href="#"><?php echo htmlspecialchars($repo['name']); ?></a>
+        <span class="tag"><?php echo ucfirst($repo['visibility']); ?></span>
+        <time>Updated <?php echo date("M d, Y", strtotime($repo['updated_at'])); ?></time>
+
+        <!-- Actions -->
+        <div class="repo-actions">
+          <a href="edit_repo.php?id=<?php echo $repo['id']; ?>" class="btn btn--small">Edit</a>
+          <a href="delete_repo.php?id=<?php echo $repo['id']; ?>" 
+             class="btn btn--small btn--danger"
+             onclick="return confirm('Are you sure you want to delete this repository?');">
+             Delete
+          </a>
+        </div>
+      </li>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <li>No repositories yet. <a href="new_repo.php">Create one?</a></li>
+  <?php endif; ?>
+</ul>
+      </ul>
+    </main>
+
+    <!-- Right Panel -->
+    <aside class="rightbar">
+      <h3>Recent activity</h3>
+      <p>(Activity feed can go here...)</p>
+    </aside>
+  </div>
 </body>
-
 </html>

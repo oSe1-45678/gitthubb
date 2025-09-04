@@ -18,10 +18,6 @@
 <?php
 session_start();
 session_destroy();
-echo '<h2 class="text-success">You have been logged out.</h2>';
-echo '<a href="login.php" class="btn btn-success mt-3">Sign in again</a>';
+header('Location: index.html');
+exit();
 ?>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-</body>
-</html>
