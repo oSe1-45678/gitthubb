@@ -120,11 +120,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button class="btn btn-success w-100 mb-3" type="submit">Sign in</button>
         </form>
 
+
         <!-- Google Login -->
-        <a href="google-login.php" class="btn google-btn w-100 mb-3">
-            <img src="https://developers.google.com/identity/images/g-logo.png" width="18">
-            Sign in with Google
-        </a>
+        <div class="mb-3">
+            <a href="google-login.php" class="btn google-btn w-100 mb-3" style="display:flex;align-items:center;justify-content:center;">
+                <img src="https://developers.google.com/identity/images/g-logo.png" width="18" style="margin-right:8px;">
+                <span>Sign in with Google</span>
+            </a>
+        </div>
+        <div class="text-center mb-2" style="color:#c9d1d9;font-size:13px;">
+            <span>Or sign in using your email and password above.</span>
+        </div>
 
         <p class="mt-3 text-center text-white">
             New to Gitthubb? <a href="signup.php">Create an account</a>

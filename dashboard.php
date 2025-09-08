@@ -3,14 +3,22 @@ session_start();
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
+  header("Location: login.php");
+  exit();
 }
 
-// Fetch user profile
+// Database connection
+$servername = "localhost";
+$username   = "root";
+$password   = "";
+$dbname     = "github_clone";
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) die("DB connection failed: " . $conn->connect_error);
 
+$user_id = $_SESSION['user_id'];
+
+// Fetch user profile
 $sql = "SELECT username, avatar_url, bio, followers, following FROM users WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -19,20 +27,8 @@ $userResult = $stmt->get_result();
 $user = $userResult->fetch_assoc();
 $stmt->close();
 
-// Database connection (adjust to your settings)
-$servername = "localhost";
-$username   = "root";
-$password   = "";
-$dbname     = "github_clone";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("DB connection failed: " . $conn->connect_error);
-}
-
 // Fetch repositories for logged-in user
-$user_id = $_SESSION['user_id'];
-$sql = "SELECT name, visibility, updated_at FROM repositories WHERE user_id = ? ORDER BY updated_at DESC";
+$sql = "SELECT id, name, visibility, updated_at FROM repositories WHERE user_id = ? ORDER BY updated_at DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
