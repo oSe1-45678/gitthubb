@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: github-clone
+    env: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: MYSQL_HOST
+        value: your-database-host
+      - key: MYSQL_USER
+        value: your-database-username
+      - key: MYSQL_PASSWORD
+        value: your-database-password
+      - key: MYSQL_DATABASE
+        value: github_clone
