@@ -1,206 +1,200 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GitHub-style Landing</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="styles.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub - Where the world builds software</title>
+  <style>
+    /* RESET */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    body { background: #0d1117; color: #c9d1d9; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ANIMATIONS */
+    .fade-in { opacity: 0; transform: translateY(40px); transition: opacity 1s ease, transform 1s ease; }
+    .fade-in.show { opacity: 1; transform: translateY(0); }
+
+    /* NAVBAR */
+    .navbar { background: #161b22; border-bottom: 1px solid #30363d; padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
+    .navbar .container { width: 90%; margin: auto; display: flex; justify-content: space-between; align-items: center; }
+    nav ul { display: flex; list-style: none; gap: 1.5rem; }
+    nav a { color: #c9d1d9; font-size: 0.95rem; transition: color 0.3s; }
+    nav a:hover { color: #58a6ff; }
+    .auth-links a { margin-left: 1rem; font-size: 0.95rem; transition: opacity 0.3s; }
+    .auth-links .signup { background: #2da44e; padding: 0.5rem 1rem; border-radius: 6px; color: #fff; font-weight: bold; }
+    .auth-links .signup:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero { text-align: center; padding: 6rem 2rem; background: radial-gradient(circle at top, #1f6feb, #0d1117 70%); position: relative; overflow: hidden; }
+    .hero h1 { font-size: 3rem; font-weight: bold; margin-bottom: 1rem; }
+    .hero p { font-size: 1.2rem; margin-bottom: 2rem; color: #8b949e; }
+    .signup-form { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+    .signup-form input { padding: 0.8rem; border: 1px solid #30363d; border-radius: 6px; background: #0d1117; color: #fff; width: 250px; }
+    .signup-form button { padding: 0.8rem 1rem; background: #2da44e; border: none; border-radius: 6px; color: #fff; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+    .signup-form button:hover { background: #2c974b; }
+    .login-link { margin-top: 1rem; color: #8b949e; }
+    .login-link a { color: #58a6ff; }
+    .octocat { margin-top: 3rem; max-width: 200px; animation: float 3s ease-in-out infinite; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* LOGOS */
+    .logos { background: #161b22; text-align: center; padding: 3rem 2rem; }
+    .logos h2 { margin-bottom: 2rem; font-size: 1.5rem; }
+    .logo-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(100px,1fr)); gap: 2rem; justify-items: center; }
+    .logo-grid img { max-height: 40px; filter: brightness(0) invert(1); transition: transform 0.3s; }
+    .logo-grid img:hover { transform: scale(1.1); }
+
+    /* FEATURES */
+    .features { padding: 5rem 2rem; max-width: 1100px; margin: auto; display: grid; gap: 4rem; }
+    .feature { display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; }
+    .feature img { flex: 1; max-width: 400px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); transition: transform 0.5s; }
+    .feature img:hover { transform: scale(1.05); }
+    .feature-text { flex: 1; }
+    .feature-text h3 { font-size: 2rem; margin-bottom: 1rem; color: #fff; }
+    .feature-text p { color: #8b949e; font-size: 1.1rem; }
+
+    /* CTA */
+    .cta { text-align: center; background: #161b22; padding: 4rem 2rem; }
+    .cta h2 { font-size: 2rem; margin-bottom: 1rem; color: #fff; }
+    .cta p { margin-bottom: 2rem; color: #8b949e; }
+    .cta a { background: #2da44e; color: #fff; padding: 0.8rem 1.2rem; border-radius: 6px; font-weight: bold; transition: background 0.3s; }
+    .cta a:hover { background: #2c974b; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid #30363d; padding: 3rem 2rem; background: #0d1117; }
+    .footer-grid { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 2rem; }
+    .footer-col h4 { margin-bottom: 1rem; color: #fff; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-col a { color: #8b949e; font-size: 0.9rem; transition: color 0.3s; }
+    .footer-col a:hover { color: #58a6ff; }
+    .footer-bottom { text-align: center; margin-top: 2rem; color: #8b949e; font-size: 0.8rem; }
+  </style>
 </head>
 <body>
-  <!-- Top Navigation -->
-  <header class="nav">
-    <div class="container nav__inner">
-      <a class="brand" href="#">
-        <!-- Use your own logo here. This wordmark is a neutral placeholder. -->
-        <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__text">Octo</span>
-      </a>
-
-      <nav class="nav__links" aria-label="Primary">
-        <button class="nav__toggle" aria-expanded="false" aria-controls="navMenu">Menu</button>
-        <ul id="navMenu" class="nav__menu">
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <a href="#" class="logo">GitHub</a>
+      <nav>
+        <ul>
           <li><a href="#">Product</a></li>
           <li><a href="#">Solutions</a></li>
-          <li><a href="#">Open&nbsp;Source</a></li>
+          <li><a href="#">Open Source</a></li>
           <li><a href="#">Pricing</a></li>
         </ul>
       </nav>
-
-      <div class="nav__actions">
-        <form class="nav__search" role="search">
-          <input type="search" placeholder="Search" aria-label="Search" />
-        </form>
-        <a class="btn btn--ghost" href="#">Sign in</a>
-        <a class="btn btn--primary" href="#">Sign up</a>
+      <div class="auth-links">
+        <a href="login.php">Sign in</a>
+        <a href="signup.php" class="signup">Sign up</a>
       </div>
     </div>
   </header>
 
   <!-- Hero -->
-  <section class="hero">
-    <div class="hero__bg" aria-hidden="true">
-      <div class="glow glow--1"></div>
-      <div class="glow glow--2"></div>
-      <div class="grid-overlay"></div>
+  <section class="hero fade-in">
+    <h1>Let’s build from here</h1>
+    <p>The world’s leading AI-powered developer platform.</p>
+    <form class="signup-form" action="signup.php">
+      <input type="email" placeholder="Email address" required>
+      <button type="submit">Sign up for GitHub</button>
+    </form>
+    <p class="login-link">Already have an account? <a href="login.php">Sign in →</a></p>
+    <img class="octocat" src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" alt="Octocat">
+  </section>
+
+  <!-- Logos -->
+  <section class="logos fade-in">
+    <h2>Trusted by teams at</h2>
+    <div class="logo-grid">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Spotify_logo_with_text.svg" alt="Spotify">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/Google_2015_logo.svg" alt="Google">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Meta_Platforms_Inc._logo.svg" alt="Meta">
     </div>
-    <div class="container hero__inner">
-      <h1 class="hero__title">Let’s build from here</h1>
-      <p class="hero__subtitle">
-        The world’s leading platform for developers to collaborate, ship, and secure software.
-      </p>
+  </section>
 
-      <form class="signup" action="#" method="post" autocomplete="off" novalidate>
-        <label class="visually-hidden" for="email">Email address</label>
-        <input id="email" name="email" type="email" placeholder="Email address" required />
-        <button class="btn btn--primary btn--xl" type="submit">Sign up for Octo</button>
-      </form>
-
-      <p class="hero__fine">
-        By signing up, you agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
-      </p>
-
-      <div class="trust">
-        <p class="trust__label">Trusted by the world’s leading organizations</p>
-        <ul class="trust__logos" aria-label="Company logos">
-          <li class="logo-placeholder" aria-hidden="true" title="Company 1"></li>
-          <li class="logo-placeholder" aria-hidden="true" title="Company 2"></li>
-          <li class="logo-placeholder" aria-hidden="true" title="Company 3"></li>
-          <li class="logo-placeholder" aria-hidden="true" title="Company 4"></li>
-          <li class="logo-placeholder" aria-hidden="true" title="Company 5"></li>
-        </ul>
+  <!-- Features -->
+  <section class="features">
+    <div class="feature fade-in">
+      <img src="https://via.placeholder.com/400x250/1f6feb/ffffff?text=Collaboration" alt="Collaboration">
+      <div class="feature-text">
+        <h3>Collaboration</h3>
+        <p>Work together across teams and organizations with built-in tools for code review, project management, and discussions.</p>
+      </div>
+    </div>
+    <div class="feature fade-in">
+      <div class="feature-text">
+        <h3>Productivity</h3>
+        <p>Accelerate development with GitHub Copilot, actions, and integrations that automate your workflow.</p>
+      </div>
+      <img src="https://via.placeholder.com/400x250/2da44e/ffffff?text=Productivity" alt="Productivity">
+    </div>
+    <div class="feature fade-in">
+      <img src="https://via.placeholder.com/400x250/161b22/ffffff?text=Security" alt="Security">
+      <div class="feature-text">
+        <h3>Security</h3>
+        <p>Secure your code with automated vulnerability scanning, Dependabot updates, and security advisories.</p>
       </div>
     </div>
   </section>
 
-  <!-- Feature Row 1 -->
-  <section class="feature">
-    <div class="container feature__inner">
-      <div class="feature__media">
-        <div class="card code-card">
-<pre aria-label="Sample code block"><code>git init
-git add .
-git commit -m "first commit"
-git push origin main</code></pre>
-        </div>
-      </div>
-      <div class="feature__content">
-        <h2>Collaborate without friction</h2>
-        <p>Branches, pull requests, and code review that scale from hobby projects to the world’s largest enterprises.</p>
-        <ul class="bullets">
-          <li>Lightning-fast code browsing</li>
-          <li>First-class reviews and checks</li>
-          <li>Protected branches and required status</li>
-        </ul>
-        <a class="link-cta" href="#">Explore collaboration →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature Row 2 -->
-  <section class="feature feature--alt">
-    <div class="container feature__inner">
-      <div class="feature__content">
-        <h2>Automate with CI/CD</h2>
-        <p>Ship faster with integrated builds, tests, and deployments powered by workflows.</p>
-        <ul class="bullets">
-          <li>Reusable workflows</li>
-          <li>Matrix builds across platforms</li>
-          <li>First-party secrets management</li>
-        </ul>
-        <a class="link-cta" href="#">See automation →</a>
-      </div>
-      <div class="feature__media">
-        <div class="card stats-card">
-          <div class="stat">
-            <div class="stat__num">7,432</div>
-            <div class="stat__label">workflows today</div>
-          </div>
-          <div class="divider"></div>
-          <div class="stat">
-            <div class="stat__num">99.95%</div>
-            <div class="stat__label">success rate</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Band -->
-  <section class="cta">
-    <div class="container cta__inner">
-      <h2>Start building today</h2>
-      <form class="signup signup--inline" action="#" method="post" autocomplete="off" novalidate>
-        <label class="visually-hidden" for="email2">Email address</label>
-        <input id="email2" name="email" type="email" placeholder="Email address" required />
-        <button class="btn btn--primary btn--lg" type="submit">Sign up</button>
-      </form>
-      <a class="btn btn--ghost btn--lg" href="#">Learn more</a>
-    </div>
+  <!-- Call To Action -->
+  <section class="cta fade-in">
+    <h2>Ready to get started?</h2>
+    <p>Join millions of developers and organizations using GitHub today.</p>
+    <a href="signup.php">Sign up for GitHub</a>
   </section>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="container footer__grid">
-      <div class="footer__brand">
-        <a class="brand brand--footer" href="#">
-          <span class="brand__mark" aria-hidden="true"></span>
-          <span class="brand__text">Octo</span>
-        </a>
-        <p class="footer__note">© 2025 Octo, Inc.</p>
+  <footer class="fade-in">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Enterprise</a></li>
+        </ul>
       </div>
-      <nav class="footer__cols" aria-label="Footer">
-        <div class="col">
-          <h3>Product</h3>
-          <ul>
-            <li><a href="#">Features</a></li>
-            <li><a href="#">Security</a></li>
-            <li><a href="#">Team</a></li>
-            <li><a href="#">Enterprise</a></li>
-          </ul>
-        </div>
-        <div class="col">
-          <h3>Platform</h3>
-          <ul>
-            <li><a href="#">API</a></li>
-            <li><a href="#">Partners</a></li>
-            <li><a href="#">CLI</a></li>
-            <li><a href="#">Mobile</a></li>
-          </ul>
-        </div>
-        <div class="col">
-          <h3>Resources</h3>
-          <ul>
-            <li><a href="#">Docs</a></li>
-            <li><a href="#">Community</a></li>
-            <li><a href="#">Learning Lab</a></li>
-            <li><a href="#">Status</a></li>
-          </ul>
-        </div>
-        <div class="col">
-          <h3>Company</h3>
-          <ul>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Press</a></li>
-            <li><a href="#">Contact</a></li>
-          </ul>
-        </div>
-      </nav>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Docs</a></li>
+          <li><a href="#">Support</a></li>
+          <li><a href="#">Learning</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
     </div>
+    <div class="footer-bottom">© 2025 GitHub, Inc.</div>
   </footer>
 
+  <!-- Scroll Animation Script -->
   <script>
-    // Minimal mobile nav behavior
-    const toggle = document.querySelector('.nav__toggle');
-    const menu   = document.getElementById('navMenu');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        const open = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', String(!open));
-        menu.classList.toggle('is-open');
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.2 };
+    const appearOnScroll = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
       });
-    }
+    }, appearOptions);
+
+    faders.forEach(fader => { appearOnScroll.observe(fader); });
   </script>
 </body>
 </html>
+
