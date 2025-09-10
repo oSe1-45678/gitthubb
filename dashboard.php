@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// Check if user is logged in
+// Redirect if user not logged in
 if (!isset($_SESSION['user_id'])) {
-  header("Location: login.php");
-  exit();
+    header("Location: login.php");
+    exit();
 }
 
 // Database connection
@@ -27,6 +27,12 @@ $userResult = $stmt->get_result();
 $user = $userResult->fetch_assoc();
 $stmt->close();
 
+// Provide fallbacks if fields are NULL (important for Google signups)
+$user['avatar_url'] = $user['avatar_url'] ?? "https://avatars.githubusercontent.com/u/1?v=4";
+$user['bio']        = $user['bio'] ?? "No bio available.";
+$user['followers']  = $user['followers'] ?? 0;
+$user['following']  = $user['following'] ?? 0;
+
 // Fetch repositories for logged-in user
 $sql = "SELECT id, name, visibility, updated_at FROM repositories WHERE user_id = ? ORDER BY updated_at DESC";
 $stmt = $conn->prepare($sql);
@@ -35,6 +41,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $repos = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
+
 $conn->close();
 ?>
 <!doctype html>
@@ -58,7 +65,7 @@ $conn->close();
       <a href="#" class="icon">+</a>
       <a href="#" class="icon">🔔</a>
       <div class="profile">
-        <img src="https://avatars.githubusercontent.com/u/1?v=4" alt="User avatar" />
+        <img src="<?php echo htmlspecialchars($user['avatar_url']); ?>" alt="User avatar" />
       </div>
     </div>
   </header>
@@ -66,30 +73,30 @@ $conn->close();
   <!-- Layout -->
   <div class="layout">
     
-  <!-- Sidebar -->
-<aside class="sidebar">
-  <div class="profile-card">
-    <img src="<?php echo htmlspecialchars($user['avatar_url']); ?>" alt="Avatar">
-    <h2><?php echo htmlspecialchars($user['username']); ?></h2>
-    <p class="bio"><?php echo htmlspecialchars($user['bio']); ?></p>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <img src="<?php echo htmlspecialchars($user['avatar_url']); ?>" alt="Avatar">
+        <h2><?php echo htmlspecialchars($user['username']); ?></h2>
+        <p class="bio"><?php echo htmlspecialchars($user['bio']); ?></p>
 
-    <div class="stats">
-      <span><strong><?php echo $user['followers']; ?></strong> followers</span>
-      ·
-      <span><strong><?php echo $user['following']; ?></strong> following</span>
-    </div>
-    <a href="edit_profile.php" class="btn btn--small">Edit profile</a>
-  </div>
+        <div class="stats">
+          <span><strong><?php echo $user['followers']; ?></strong> followers</span>
+          ·
+          <span><strong><?php echo $user['following']; ?></strong> following</span>
+        </div>
+        <a href="edit_profile.php" class="btn btn--small">Edit profile</a>
+      </div>
 
-  <ul class="sidebar-links">
-    <li><a href="#" class="active">Overview</a></li>
-    <li><a href="#">Repositories</a></li>
-    <li><a href="#">Projects</a></li>
-    <li><a href="#">Stars</a></li>
-    <li><a href="#">Followers</a></li>
-    <li><a href="#">Following</a></li>
-  </ul>
-</aside>
+      <ul class="sidebar-links">
+        <li><a href="#" class="active">Overview</a></li>
+        <li><a href="#">Repositories</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Stars</a></li>
+        <li><a href="#">Followers</a></li>
+        <li><a href="#">Following</a></li>
+      </ul>
+    </aside>
 
     <!-- Main -->
     <main class="main">
@@ -100,29 +107,29 @@ $conn->close();
 
       <div class="repo-filters">
         <ul class="repo-list">
-  <?php if (count($repos) > 0): ?>
-    <?php foreach ($repos as $repo): ?>
-      <li>
-        <a href="#"><?php echo htmlspecialchars($repo['name']); ?></a>
-        <span class="tag"><?php echo ucfirst($repo['visibility']); ?></span>
-        <time>Updated <?php echo date("M d, Y", strtotime($repo['updated_at'])); ?></time>
+        <?php if (count($repos) > 0): ?>
+          <?php foreach ($repos as $repo): ?>
+            <li>
+              <a href="#"><?php echo htmlspecialchars($repo['name']); ?></a>
+              <span class="tag"><?php echo ucfirst($repo['visibility']); ?></span>
+              <time>Updated <?php echo date("M d, Y", strtotime($repo['updated_at'])); ?></time>
 
-        <!-- Actions -->
-        <div class="repo-actions">
-          <a href="edit_repo.php?id=<?php echo $repo['id']; ?>" class="btn btn--small">Edit</a>
-          <a href="delete_repo.php?id=<?php echo $repo['id']; ?>" 
-             class="btn btn--small btn--danger"
-             onclick="return confirm('Are you sure you want to delete this repository?');">
-             Delete
-          </a>
-        </div>
-      </li>
-    <?php endforeach; ?>
-  <?php else: ?>
-    <li>No repositories yet. <a href="new_repo.php">Create one?</a></li>
-  <?php endif; ?>
-</ul>
-      </ul>
+              <!-- Actions -->
+              <div class="repo-actions">
+                <a href="edit_repo.php?id=<?php echo $repo['id']; ?>" class="btn btn--small">Edit</a>
+                <a href="delete_repo.php?id=<?php echo $repo['id']; ?>" 
+                   class="btn btn--small btn--danger"
+                   onclick="return confirm('Are you sure you want to delete this repository?');">
+                   Delete
+                </a>
+              </div>
+            </li>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <li>No repositories yet. <a href="new_repo.php">Create one?</a></li>
+        <?php endif; ?>
+        </ul>
+      </div>
     </main>
 
     <!-- Right Panel -->
@@ -133,3 +140,4 @@ $conn->close();
   </div>
 </body>
 </html>
+

@@ -1,4 +1,6 @@
 <?php
+
+@include 'dashboard.php';
 ob_start(); // Start output buffering to avoid header issues
 session_start();
 require_once __DIR__ . '/vendor/autoload.php';
